@@ -1,0 +1,44 @@
+############### category_table ##############################
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('1', 'Junior', 'J');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('2', 'Pierwszy Krok', 'PK');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('3', 'Ograniczona Formu³a Sernior', 'OFS');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('4', 'Full Contact', 'FC');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('5', 'Kadet', 'K');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('6', 'M³odzie¿owiec', 'MLO');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('7', 'No Gi Bia³e Pasy', 'NOGI BIA£E');
+
+INSERT INTO `almma`.`category` (`id_cat`, `name_cat`, `cat_short`) VALUES ('8', 'No Gi Kolorowe Pasy', 'NOGI KOLOR');
+
+
+############## rank_table #############################
+
+INSERT INTO `almma`.`rank` (`id_rank`, `rank`) VALUES ('1', 'Almma');
+
+INSERT INTO `almma`.`rank` (`id_rank`, `rank`) VALUES ('2', 'Puchar Polski');
+
+INSERT INTO `almma`.`rank` (`id_rank`, `rank`) VALUES ('3', 'Mistrzostwa Polski');
+
+
+############## weight_table ###########################
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('1', '55');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('2', '61');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('3', '66');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('4', '70');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('5', '77');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('6', '84');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('7', '93');
+
+INSERT INTO `almma`.`weight_cat` (`id_weight`, `value_weight`) VALUES ('8', 'OPEN');
