@@ -1,0 +1,10 @@
+# -*- coding UTF-8 -*-
+import random
+
+imiona = ("Antoni", "Jakub", "Szymon", "Jan", "Filip", "Franciszek", "Miko³aj", "Aleksander", "Kacper", "Wojciech", "Adam", "Micha³", "Marcel", "Wiktor", "Piotr", "Stanis³aw", "Bartosz", "Mateusz", "Igor", "Nikodem", "Alan", "Leon", "Oliwier", "Maksymilian", "Mi³osz", "Dawid", "Tymon", "Oskar", "Karol", "Maciej", "Tomasz", "Ignacy", "Dominik", "Tymoteusz", "Fabian", "Natan", "Krzysztof", "Julian", "Pawe³", "Hubert", "Gabriel", "Patryk", "Ksawery", "Kamil", "Bart³omiej", "Sebastian", "Adrian", "Olaf", "Krystian", "Kuba", "Borys")
+nazwiska = ("Adamczyk", "Dudek", "Górski", "Jab³oñski", "Jaworski", "Król", "Majewski", "Malinowski", "Michalski", "Nowakowski", "Nowicki", "Olszewski", "Pawlak", "Paw³owski", "Stêpieñ", "Walczak ", "Wieczorek", "Witkowski", "Wróbel", "Zaj¹c", "Baran", "B¹k", "Chmielewski ", "Duda", "Jakubowski", "Jasiñski", "Marciniak", "Michalak", "Ostrowski", "Pietrzak", "Rutkowski", "Sadowski", "Sikora", "Szewczyk", "Tomaszewski", "Wilk", "W³odarczyk", "Wróblewski", "Zalewski", "Zawadzki", "Nowak", "Kowalski", "Wiœniewski", "Wójcik", "Kowalczyk", "Kamiñski", "Lewandowski", "Zieliñski", "Szymañski", "WoŸniak", "D¹browski", "Koz³owski", "Jankowski", "Mazur", "Wojciechowski", "Kwiatkowski", "Krawczyk", "Kaczmarek", "Piotrowski", "Grabowski", "Borkowski", "Czarnecki", "G³owacki", "Kalinowski", "KaŸmierczak", "Ko³odziej", "Konieczny", "Kubiak", "Kucharski", "Lis", "Maciejewski", "Mazurek", "Sawicki", "Sikorski ", "Sobczak", "Soko³owski", "Szczepañski", "Urbañski", "Wasilewski", "Wysocki", "Adamski", "Baranowski", "B³aszyk", "Borowski", "Brzeziñski", "Chojnacki", "Gajewski", "Górecki", "Kaczmarczyk", "Kania ", "Krajewski", "Krupa", "Laskowski", "Makowski", "Mróz", "Przybylski", "Szulc", "Szymczak", "Zakrzewski", "Zió³kowski")
+
+class gen:
+    def __init__(self):
+        pass
+    
