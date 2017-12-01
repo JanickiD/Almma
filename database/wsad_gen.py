@@ -1,10 +1,29 @@
-# -*- coding UTF-8 -*-
+# -*- coding: UTF-8 -*-
 import random
 
-imiona = ("Antoni", "Jakub", "Szymon", "Jan", "Filip", "Franciszek", "Miko≥aj", "Aleksander", "Kacper", "Wojciech", "Adam", "Micha≥", "Marcel", "Wiktor", "Piotr", "Stanis≥aw", "Bartosz", "Mateusz", "Igor", "Nikodem", "Alan", "Leon", "Oliwier", "Maksymilian", "Mi≥osz", "Dawid", "Tymon", "Oskar", "Karol", "Maciej", "Tomasz", "Ignacy", "Dominik", "Tymoteusz", "Fabian", "Natan", "Krzysztof", "Julian", "Pawe≥", "Hubert", "Gabriel", "Patryk", "Ksawery", "Kamil", "Bart≥omiej", "Sebastian", "Adrian", "Olaf", "Krystian", "Kuba", "Borys")
-nazwiska = ("Adamczyk", "Dudek", "GÛrski", "Jab≥oÒski", "Jaworski", "KrÛl", "Majewski", "Malinowski", "Michalski", "Nowakowski", "Nowicki", "Olszewski", "Pawlak", "Paw≥owski", "StÍpieÒ", "Walczak†", "Wieczorek", "Witkowski", "WrÛbel", "Zajπc", "Baran", "Bπk", "Chmielewski†", "Duda", "Jakubowski", "JasiÒski", "Marciniak", "Michalak", "Ostrowski", "Pietrzak", "Rutkowski", "Sadowski", "Sikora", "Szewczyk", "Tomaszewski", "Wilk", "W≥odarczyk", "WrÛblewski", "Zalewski", "Zawadzki", "Nowak", "Kowalski", "Wiúniewski", "WÛjcik", "Kowalczyk", "KamiÒski", "Lewandowski", "ZieliÒski", "SzymaÒski", "Woüniak", "Dπbrowski", "Koz≥owski", "Jankowski", "Mazur", "Wojciechowski", "Kwiatkowski", "Krawczyk", "Kaczmarek", "Piotrowski", "Grabowski", "Borkowski", "Czarnecki", "G≥owacki", "Kalinowski", "Kaümierczak", "Ko≥odziej", "Konieczny", "Kubiak", "Kucharski", "Lis", "Maciejewski", "Mazurek", "Sawicki", "Sikorski†", "Sobczak", "Soko≥owski", "SzczepaÒski", "UrbaÒski", "Wasilewski", "Wysocki", "Adamski", "Baranowski", "B≥aszyk", "Borowski", "BrzeziÒski", "Chojnacki", "Gajewski", "GÛrecki", "Kaczmarczyk", "Kania†", "Krajewski", "Krupa", "Laskowski", "Makowski", "MrÛz", "Przybylski", "Szulc", "Szymczak", "Zakrzewski", "ZiÛ≥kowski")
-
 class gen:
+    __imiona = ("Antoni", "Jakub", "Szymon", "Jan", "Filip", "Franciszek", "Miko≈Çaj", "Aleksander", "Kacper", "Wojciech", "Adam", "Micha≈Ç", "Marcel", "Wiktor", "Piotr", "Stanis≈Çaw", "Bartosz", "Mateusz", "Igor", "Nikodem", "Alan", "Leon", "Oliwier", "Maksymilian", "Mi≈Çosz", "Dawid", "Tymon", "Oskar", "Karol", "Maciej", "Tomasz", "Ignacy", "Dominik", "Tymoteusz", "Fabian", "Natan", "Krzysztof", "Julian", "Pawe≈Ç", "Hubert", "Gabriel", "Patryk", "Ksawery", "Kamil", "Bart≈Çomiej", "Sebastian", "Adrian", "Olaf", "Krystian", "Kuba", "Borys")
+    __nazwiska = ("Adamczyk", "Dudek", "G√≥rski", "Jab≈Ço≈Ñski", "Jaworski", "Kr√≥l", "Majewski", "Malinowski", "Michalski", "Nowakowski", "Nowicki", "Olszewski", "Pawlak", "Paw≈Çowski", "Stƒôpie≈Ñ", "Walczak¬†", "Wieczorek", "Witkowski", "Wr√≥bel", "ZajƒÖc", "Baran", "BƒÖk", "Chmielewski¬†", "Duda", "Jakubowski", "Jasi≈Ñski", "Marciniak", "Michalak", "Ostrowski", "Pietrzak", "Rutkowski", "Sadowski", "Sikora", "Szewczyk", "Tomaszewski", "Wilk", "W≈Çodarczyk", "Wr√≥blewski", "Zalewski", "Zawadzki", "Nowak", "Kowalski", "Wi≈õniewski", "W√≥jcik", "Kowalczyk", "Kami≈Ñski", "Lewandowski", "Zieli≈Ñski", "Szyma≈Ñski", "Wo≈∫niak", "DƒÖbrowski", "Koz≈Çowski", "Jankowski", "Mazur", "Wojciechowski", "Kwiatkowski", "Krawczyk", "Kaczmarek", "Piotrowski", "Grabowski", "Borkowski", "Czarnecki", "G≈Çowacki", "Kalinowski", "Ka≈∫mierczak", "Ko≈Çodziej", "Konieczny", "Kubiak", "Kucharski", "Lis", "Maciejewski", "Mazurek", "Sawicki", "Sikorski¬†", "Sobczak", "Soko≈Çowski", "Szczepa≈Ñski", "Urba≈Ñski", "Wasilewski", "Wysocki", "Adamski", "Baranowski", "B≈Çaszyk", "Borowski", "Brzezi≈Ñski", "Chojnacki", "Gajewski", "G√≥recki", "Kaczmarczyk", "Kania¬†", "Krajewski", "Krupa", "Laskowski", "Makowski", "Mr√≥z", "Przybylski", "Szulc", "Szymczak", "Zakrzewski", "Zi√≥≈Çkowski")
     def __init__(self):
         pass
     
+    def genImie(self):
+        wylosowane_imie = self.__imiona[random.randint(0, len(self.__imiona))]
+        return wylosowane_imie
+    def genNazwisko(self):
+        wylosowane_nazwisko = self.__nazwiska[random.randint(0, len(self.__nazwiska))]
+        return wylosowane_nazwisko
+    def genWaga(self):
+        waga = random.randint(1,8)
+        return waga
+    def genKategoria(self):
+        kategoria = random.randint(1,8)
+    
+generator = gen()
+
+F=open("wsad.txt", "w")
+F.seek(0)
+F.writelines(["INSERT INTO `almma`.`player` (`id_p`,`name_p`, `last_name_p`, `id_weight`, `id_club`, `id_cat`) VALUES ('deafult', '"+str(generator.genImie())+"'"+str(generator.genNazwisko())"', '"+str(generator.genWaga())+"', '" + str(generator.genKategoria())+"'"])
+
+#F. INSERT INTO `almma`.`player` (`id_p`,`name_p`, `last_name_p`, `id_weight`, `id_club`, `id_cat`, `id_weight`, `id_weight`) VALUES ('deafult', 'Junior', 'J');
+
