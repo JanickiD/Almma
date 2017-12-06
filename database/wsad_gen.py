@@ -27,23 +27,41 @@ class gen:
         return klub
     def ile(self):
         return len(self.__kluby)
+
+    def playerHasFightPlayer(self):
+        player = random.randint(0, 436)
+        return player
     
+    def playerHasFightCat(self):
+        category = random.randint(1, 8)
+        return category    
+    
+#### wywoływanie klasy ###    
 generator = gen()
 print(generator.ile())
 
-C=open("clubs.txt", "w")
-C.seek(0)
-for i in range(0, generator.ile()-1):
-    C.writelines(["\nINSERT INTO `almma`.`club` (`name_club`, `city_club`, `trainer_name`) VALUES('"+str(generator.genKlub())+"', 'daefult', 'daefult');" ])
-C.close()
-P=open("Players.txt", "w")
-P.seek(0)
-for i in range (0, 180):
-    P.writelines(["INSERT INTO `almma`.`player` (`name_p`, `last_name_p`, `id_weight`, `id_club`, `id_cat`) VALUES ('"+str(generator.genImie())+"', '"+str(generator.genNazwisko())+"', '"+str(generator.genWaga())+"', '" + str(generator.genKategoria())+"', '"+str(generator.genKlub())+"');"])
-    P.writelines(["\n"])
 
+### generowanie klubów ####
+#C=open("clubs.txt", "w")
+#C.seek(0)
+#for i in range(0, generator.ile()-1):
+    #C.writelines(["\nINSERT INTO `almma`.`club` (`name_club`, `city_club`, `trainer_name`) VALUES('"+str(generator.genKlub())+"', 'daefult', 'daefult');" ])
+#C.close()
+
+
+### gnerowanie zawodników ###
+#P=open("Players.txt", "w")
+#P.seek(0)
+#for i in range (0, 300):
+    #P.writelines(["INSERT INTO `almma`.`player` (`name_p`, `last_name_p`, `id_weight`, `id_club`) VALUES ('"+str(generator.genImie())+"', '"+str(generator.genNazwisko())+"', '"+str(generator.genWaga())+"', '"+str(generator.genKlub())+"');\n"])
+   ## P.writelines(["\n"])
+
+### generowanie zawodników zgloszonych w kategoriach
+P=open("PlayersCat.txt", "w")
+P.seek(0)
+for i in range (0, 500):
+    P.writelines(["insert into category_has_player values ("+str(generator.playerHasFightPlayer())+" , " +str(generator.playerHasFightCat()) +");\n"])
 
 P.close()
 
 #F. INSERT INTO `almma`.`player` (`id_p`,`name_p`, `last_name_p`, `id_weight`, `id_club`, `id_cat`, `id_weight`, `id_weight`) VALUES ('deafult', 'Junior', 'J');
-
