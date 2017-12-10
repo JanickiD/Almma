@@ -148,8 +148,16 @@ CREATE TABLE IF NOT EXISTS `almma`.`tournament` (
   `city_tourn` VARCHAR(25) NOT NULL,
   `date_tourn` DATE NOT NULL,
   `rank_tourn` INT(11) NOT NULL,
-  PRIMARY KEY (`id_tourn`),
-  UNIQUE INDEX `id_tourn` (`id_tourn` ASC))
+  `tourn_is_active` bool NULL DEFAULT '0',
+  `rank_id_rank` INT(1) NOT NULL,
+  PRIMARY KEY (`id_tourn`, `rank_id_rank`),
+  UNIQUE INDEX `id_tourn` (`id_tourn` ASC),
+  INDEX `fk_tournament_rank1_idx` (`rank_id_rank` ASC),
+  CONSTRAINT `fk_tournament_rank1`
+    FOREIGN KEY (`rank_id_rank`)
+    REFERENCES `almma`.`rank` (`id_rank`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -162,18 +170,10 @@ DROP TABLE IF EXISTS `almma`.`rank` ;
 CREATE TABLE IF NOT EXISTS `almma`.`rank` (
   `id_rank` INT(1) NOT NULL AUTO_INCREMENT,
   `rank` VARCHAR(25) NOT NULL,
-  `tournament_id_tourn` INT(4) NOT NULL,
-  PRIMARY KEY (`id_rank`, `tournament_id_tourn`),
-  UNIQUE INDEX `id_rank` (`id_rank` ASC),
-  INDEX `fk_rank_tournament1_idx` (`tournament_id_tourn` ASC),
-  CONSTRAINT `fk_rank_tournament1`
-    FOREIGN KEY (`tournament_id_tourn`)
-    REFERENCES `almma`.`tournament` (`id_tourn`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id_rank`),
+  UNIQUE INDEX `id_rank` (`id_rank` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
 
 -- -----------------------------------------------------
 -- Table `almma`.`results`
@@ -230,8 +230,8 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `almma`.`category_has_player` ;
 
 CREATE TABLE IF NOT EXISTS `almma`.`category_has_player` (
-  `category_id_cat` INT(11) NOT NULL,
   `player_id_p` INT(3) NOT NULL,
+  `category_id_cat` INT(11) NOT NULL,
   PRIMARY KEY (`category_id_cat`, `player_id_p`),
   INDEX `fk_category_has_player_player1_idx` (`player_id_p` ASC),
   INDEX `fk_category_has_player_category1_idx` (`category_id_cat` ASC),

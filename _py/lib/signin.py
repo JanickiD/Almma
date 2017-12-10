@@ -24,9 +24,11 @@ class signin:
                 a = loginy[i]
                 if login in a:
                     login_status +=1
+                    return login
                 elif login not in a:
-                    continue
-            return login
+                    print("niepoprawny login")
+                    break
+            
         
     def getPass(self):
         c = self.conn.cursor()        
@@ -42,9 +44,10 @@ class signin:
                     pass_status +=1
                     print("Zalogowany!")
                     self.setUserGroup()
+                    return password
                 elif pswrds not in a:
                     print("Hasło nieprawidłowe")
-            return password
+            
     
     def setUserGroup(self):
         c = self.conn.cursor()
@@ -54,3 +57,6 @@ class signin:
         
     def getUG(self):
         return self.__userGroup
+    
+    def getConn(self):
+        return self.conn
