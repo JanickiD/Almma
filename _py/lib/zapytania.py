@@ -2,6 +2,7 @@
 import pymysql
 import condb
 import os
+import menu
 
 def qNumberInCat(connectionPar):
     os.system("cls") 
@@ -13,7 +14,7 @@ def qNumberInCat(connectionPar):
     for i in c.fetchall():
         print("["+ str(j) +"] Kategoria:", i[1], i[0],"zawodników.")
         j += 1
-    input()       
+    menu.menuNumberInCat()
     
 def qCatWeightComp(category, connectionPar):
     conn = connectionPar
@@ -32,4 +33,13 @@ def qCatWeightComp(category, connectionPar):
     #conn = connectionPar
     #c=conn.cursor()
     #c.execute("insert into tournament (name_tourn, city_tourn, date_tourn, rank_tourn) values ('" + str(nazwa) +"', '" + str(city)+"', '"+str(date)+"', "+rank +");')
-    #print("Zawody dodano!")l
+    #print("Zawody dodano!")ll
+    
+def qPlayersInWeightCat(connectionPar):
+    conn = connectionPar
+    c=conn.cursor()
+    for i in range(1,8):
+        c.execute("select count(*) as 'Liczba zawodników', weight_cat.value_weight as waga from category_has_player as c join player as p on c.player_id_p = p.id_p join weight_cat on p.id_weight = weight_cat.id_weight where c.category_id_cat =" + str(i) + " group by weight_cat.value_weight;")
+        for j in c.fetchall():
+            print(j)
+    input()
