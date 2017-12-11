@@ -14,15 +14,18 @@ def qNumberInCat(connectionPar):
     for i in c.fetchall():
         print("["+ str(j) +"] Kategoria:", i[1], i[0],"zawodników.")
         j += 1
-    menu.menuNumberInCat()
+    print("Wybierz operację:")
+    while True:
+        menu.menuNumberInCat()
+
     
-def qCatWeightComp(category, connectionPar):
-    conn = connectionPar
-    c=conn.cursor()
-    c.execute("select count(id_p), w.value_weight, k.name_cat  from category_has_player join player as p on category_has_player.player_id_p = p.id_p join weight_cat as w on p.id_weight = w.id_weight join category as k on category_has_player.category_id_cat = k.id_cat where category_id_cat = "+ str(category) + " group by p.id_weight;")
-    for i in c.fetchall():
-        print(i)
-    input() #zatrzymanie konsoli
+#def qCatWeightComp(category, connectionPar):
+    #conn = connectionPar
+    #c=conn.cursor()
+    #c.execute("select count(id_p), w.value_weight, k.name_cat  from category_has_player join player as p on category_has_player.player_id_p = p.id_p join weight_cat as w on p.id_weight = w.id_weight join category as k on category_has_player.category_id_cat = k.id_cat where category_id_cat = "+ str(category) + " group by p.id_weight;")
+    #for i in c.fetchall():
+        #print(i)
+    #input() #zatrzymanie konsoli
     
 #def setTournament(connectionPar):
     #nazwa = input("Wpisz nazwę zawodów: ")
@@ -38,8 +41,12 @@ def qCatWeightComp(category, connectionPar):
 def qPlayersInWeightCat(connectionPar):
     conn = connectionPar
     c=conn.cursor()
+    categories ={1:"Junior", 2:"PK", 3:"OFS", 4:"FC", 5:"Kadet", 6:"Młodzieżowiec", 7:"NoGi Białe", 8:"NoGi Kolor"}
     for i in range(1,8):
         c.execute("select count(*) as 'Liczba zawodników', weight_cat.value_weight as waga from category_has_player as c join player as p on c.player_id_p = p.id_p join weight_cat on p.id_weight = weight_cat.id_weight where c.category_id_cat =" + str(i) + " group by weight_cat.value_weight;")
+        print("=======  " + categories[i] + "  ===========" )
+        print("waga \t Liczba zawodników")
         for j in c.fetchall():
-            print(j)
-    input()
+            print(j[1], "\t" , j[0])
+    return True
+    

@@ -26,16 +26,24 @@ def showMenuAdmin():
     for i in menu:
         print("[",j,"]",menu[i])
         j +=1
+    menuAdmin()
+    
+def menuAdmin():
     choice = menuChoice()
     check_test1 =0
     while not check_test1:
-        if str(choice) == '2':
+        if str(choice) == '1':
+            pass
+        elif str(choice) == '2':
             zapytania.qNumberInCat(connPar)
-            return True
+        elif str(choice) == '3':
+            pass
+        elif str(choice) == '4':
+            return False
 
-def showCatWeightComp(): # pokazuje ilość zaowników w wagach w danej kategorii
-    ch2 = str(menuChoice())
-    zapytania.qCatWeightComp(ch2)
+#def showCatWeightComp(): # pokazuje ilość zaowników w wagach w danej kategorii
+    #ch2 = str(menuChoice())
+    #zapytania.qCatWeightComp(ch2)
     
 def menuNumberInCat():
     menu = {1:"Rozbicie na kategorie wagowe", 2:"Powrót do menu głównego"}
@@ -48,5 +56,9 @@ def menuNumberInCat():
     while not choice_test2:
         if str(choice) == '1':
             zapytania.qPlayersInWeightCat(connPar)
-        if str(choice) == '2':
-            return False   
+            return True
+        elif str(choice) == '2':
+            return False 
+        else:
+            print("Wybór nieprawidłowy")
+            return False
