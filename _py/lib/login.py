@@ -13,15 +13,15 @@ import os
 
 logowanie = signin.signin()
 check_test = 0
-while not check_test:
+while check_test != '3':
     menu.showMainMenu(logowanie.getUG())
-    chmm = menu.menuChoice()
-    if chmm == '1':
+    choice = menu.menuChoice()
+    if choice == '1':
         menu.showMenuAdmin()       
-    elif chmm == '2':
+    elif choice == '2':
         pass #wstawić metodę
-    elif chmm == '3':
-        os.sys.exit()
+    elif choice == '3':
+        break
     else:
         print("Wybór nieprawidłowy.")
 

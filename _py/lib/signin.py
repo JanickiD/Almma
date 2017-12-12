@@ -1,7 +1,12 @@
 # -*- coding: UTF-8 -*-
+import sys
+sys.path.append('.lib')
+import getpass
 import pymysql
 import condb
-import getpass
+
+
+
 
 class signin:
     __userGroup = None

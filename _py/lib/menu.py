@@ -7,12 +7,10 @@ connPar = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.ge
 
 def showMainMenu(userGroup):
     if userGroup == 1:
-        m = {1: "Menu Administratora", 2:"Statsy", 3:"KONIEC"}
+        m = {1: "Menu Administratora", 2:"Pokaż drzewka", 3:"Zawodnicy", 4:"Koniec"}
         for i in m:
             print("[", i, "]", m[i])
-        #choice = menuChoice()
-        #if str(choice)==1:
-            #showMenuAdmin()
+
 
 def menuChoice():
     ch= input("Wybierz pozycje menu: ")
@@ -21,25 +19,30 @@ def menuChoice():
 def showMenuAdmin():
     os.system('cls')
     print("##########   Menu Administratora   ###############")
-    menu={1:"Zarządzanie zawodami", 2:"Zgłoszeni zawodnicy w podziale na kategorie", 3:"Rozpiski", 4:"Powrót do menu głównego"}
+    menu={2:"Zarządzanie zawodami", 1:"Zgłoszeni zawodnicy w podziale na kategorie", 3:"Rozrysuj drzewka", 4:"Powrót do menu głównego"}
     j = 1
     for i in menu:
         print("[",j,"]",menu[i])
         j +=1
-    menuAdmin()
+   # menuAdmin()
     
 def menuAdmin():
-    choice = menuChoice()
+    
     check_test1 =0
-    while not check_test1:
-        if str(choice) == '1':
+    while check_test1 != '4':
+        showMenuAdmin()
+        choice = menuChoice()
+        if choice == '1':
             pass
-        elif str(choice) == '2':
+        elif choice == '2':
             zapytania.qNumberInCat(connPar)
-        elif str(choice) == '3':
+            return True
+        elif choice == '3':
             pass
-        elif str(choice) == '4':
-            return False
+        elif choice == '4':
+            return True
+        else:
+            print("Nieprawidłowy wybór")
 
 #def showCatWeightComp(): # pokazuje ilość zaowników w wagach w danej kategorii
     #ch2 = str(menuChoice())
@@ -52,13 +55,15 @@ def menuNumberInCat():
         print("[",j,"]",menu[i])
         j +=1
     choice_test2 = 0
-    choice = menuChoice()
-    while not choice_test2:
-        if str(choice) == '1':
+    while choice_test2 != 2:
+        choice = menuChoice()
+        if choice == '1':
             zapytania.qPlayersInWeightCat(connPar)
             return True
-        elif str(choice) == '2':
-            return False 
+        elif choice == '2':
+            choice_test2 = 2
+            return choice_test2
         else:
             print("Wybór nieprawidłowy")
             return False
+    return True

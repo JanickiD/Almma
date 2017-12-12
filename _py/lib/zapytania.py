@@ -48,5 +48,5 @@ def qPlayersInWeightCat(connectionPar):
         print("waga \t Liczba zawodników")
         for j in c.fetchall():
             print(j[1], "\t" , j[0])
-    return True
+    print ('===========================================')
     
