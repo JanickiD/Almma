@@ -1,5 +1,9 @@
 # -*- coding: UTF-8 -*-
 import os
+import pymysql
+import condb
+import zapytania
+connPar = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'))
 
 def menuChoice():
     ch= int(input("Wybierz pozycje menu: "))
@@ -14,7 +18,7 @@ def showMainMenu(userGroup):
 def showMenuAdmin():
     os.system('cls')
     print("##########   Menu Administratora   ###############")
-    menu={2:"Zarządzanie zawodami", 1:"Zgłoszeni zawodnicy w podziale na kategorie", 3:"Rozrysuj drzewka", 4:"Powrót do menu głównego"}
+    menu={1:"Zgłoszeni zawodnicy w podziale na kategorie", 2:"Zarządzanie zawodami", 3:"Rozrysuj drzewka", 4:"Powrót do menu głównego"}
     j = 1
     for i in menu:
         print("[",j,"]",menu[i])
@@ -27,12 +31,24 @@ def menuAdmin():
         showMenuAdmin()
         choice = menuChoice()
         if choice == 1:
-            zapytania.qNumberInCat(connPar)
+            menuqNumberInCat()
         elif choice == 2:
             pass
         elif choice == 3:
             pass
         elif choice == 4:
+            break
+        else:
+            print("Nieprawidłowy wybór")
+            
+def menuqNumberInCat():
+    statusqNIC = 0
+    while statusqNIC != 99:
+        zapytania.qNumberInCat(connPar)
+        choiceqNIC = menuChoice()
+        if choiceqNIC == 1:
+            pass
+        elif choiceqNIC == 2:
             break
         else:
             print("Nieprawidłowy wybór")
