@@ -3,10 +3,20 @@ import os
 import pymysql
 import condb
 import zapytania
-connPar = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'))
+
+def setConnection():
+    connPar = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'))
+    return connPar
+
+def connectionClose():
+    connPar.close()
 
 def menuChoice():
-    ch= int(input("Wybierz pozycje menu: "))
+    ch=""
+    try:
+        ch= int(input("Wybierz pozycje menu: "))
+    except:
+        print("Możesz wprowadzać tylko cyfry!")
     return ch
 
 def showMainMenu(userGroup):
@@ -27,7 +37,7 @@ def showMenuAdmin():
 def showMenuTournamentsManagement():
     os.system('cls')
     print('##########   Zarządzanie zawodami   ###############')
-    menu = {1:"Pokaż otwarte zawody", 2:"Dodaj zawody", 3:"Zmień status", 4:"Powrót"}
+    menu = {1:"Pokaż zawody", 2:"Dodaj zawody", 3:"Powrót"}
     j = 1
     for i in menu:
         print("[",j,"]",menu[i])
@@ -52,7 +62,7 @@ def menuAdmin():
 def menuqNumberInCat():
     statusqNIC = 0
     while statusqNIC != 99:
-        zapytania.qNumberInCat(connPar)
+        zapytania.qNumberInCat(setConnection())
         choiceqNIC = menuChoice()
         if choiceqNIC == 1:
             menuqPlayersInWeightCat()
@@ -64,7 +74,7 @@ def menuqNumberInCat():
 def menuqPlayersInWeightCat():
     statusqPIWC = 0
     while statusqPIWC != 99:
-        zapytania.qPlayersInWeightCat(connPar)
+        zapytania.qPlayersInWeightCat(setConnection())
         chocieqPIWC = menuChoice()
         if chocieqPIWC != None:
             break
@@ -76,14 +86,11 @@ def menuTournamentsManagement():
     while statusmTM != 99:
         showMenuTournamentsManagement()
         choiceTM = menuChoice()
-        print(choiceTM)
         if choiceTM == 1:
             menuShowAllTournaments()
         elif choiceTM == 2:
-            pass
+            zapytania.iCreateTournament(setConnection())
         elif choiceTM == 3:
-            pass
-        elif choiceTM == 4:
             break
         else:
             print("Nieprawidłowy wybór")
@@ -91,11 +98,15 @@ def menuTournamentsManagement():
 def menuShowAllTournaments():
     statusmSAT = 0
     while statusmSAT != 99:
-        zapytania.qShowAllTournaments(connPar)
+        zapytania.qShowAllTournaments(setConnection())
         choicemSAT = menuChoice()
         if choicemSAT == 1:
-            pass
+            zapytania.aCloseTournament(setConnection())
         elif choicemSAT == 2:
             break
         else:
             print("Wybór niepoprawny")
+            
+
+
+        

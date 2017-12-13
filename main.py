@@ -18,4 +18,5 @@ while status == 0:
     if choice == 3:
         pass
     if choice == 4:
+        lib.menu.connectionClose()
         sys.exit()
