@@ -14,9 +14,8 @@ while status == 0:
     if choice == 1:
         lib.menu.menuAdmin()
     if choice == 2:
-        pass
+        lib.menu.menuShowGameTrees()
     if choice == 3:
         pass
     if choice == 4:
-        lib.menu.connectionClose()
         sys.exit()
