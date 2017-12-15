@@ -20,7 +20,7 @@ def menuChoice():
 def showMainMenu(userGroup):
     os.system('cls')
     if userGroup == 1:
-        m = {1: "Menu Administratora", 2:"Pokaż drzewka", 3:"Zawodnicy", 4:"Koniec"}
+        m = {1: "Menu Administratora", 2:"Pokaż listę walk", 3:"Zawodnicy", 4:"Koniec"}
         for i in m:
             print("[", i, "]", m[i])
             
