@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-import sys
-sys.path.append('.lib')
+#import sys
+#sys.path.append('.lib')
 import getpass
 import pymysql
 import condb
@@ -12,7 +12,7 @@ class signin:
     __userGroup = None
     
     def __init__(self):
-        self.conn = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'))
+        self.conn = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'), autocommit=True, charset='UTF8')
         self.login = self.getLogin()
         self.password = self.getPass()
         
