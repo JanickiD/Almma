@@ -4,6 +4,7 @@ sys.path.append('C:\\Users\\user\\Desktop\\almma\\lib')
 import pymysql
 import lib.signin
 import lib.menu
+import lib.zapytania
 
 almma = lib.signin.signin()
 
@@ -16,6 +17,6 @@ while status == 0:
     if choice == 2:
         lib.menu.menuShowGameTrees()
     if choice == 3:
-        pass
+        lib.zapytania.iCreateFights(lib.menu.setConnection())
     if choice == 4:
         sys.exit()

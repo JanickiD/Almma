@@ -94,17 +94,23 @@ def iDraw(connectionPar):
     try:
         for category in range(1,9):
             for weight_cat in range(1,9):
+                c2.execute("SET FOREIGN_KEY_CHECKS = 0")
                 c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and id_weight = "+str(weight_cat)+" order by id_club;")
                 players = c.fetchall()
                 j = 0
                 for i in players:
-                    c2.execute("INSERT INTO `almma`.`game_tree` (`id_p`, `id_gt`, `id_cat`) VALUES ( "+str(i[0])+", "+str(id_gt[j])+","+str(weight_cat)+");")
-                    j += 1                 
+                    c2.execute("INSERT INTO `almma`.`game_tree` (`id_p`, `id_gt`) VALUES ( "+str(i[0])+", "+str(id_gt[j])+" );")
+                    j += 1
     except:
         print("error") 
 
-def iCreateFights():
-    pass
+def iCreateFights(connetionPar):
+    c = connetionPar.cursor()
+    c.execute("select id_fight, id_gt_blue, id_gt_red from fight")
+    walki = c.fetchall()
+    for i in walki:
+        print(i[0], i[1], i[2])
+    
 
 def qShowGameTrees(connectionPar, category, weight_cat):
     c=connectionPar.cursor()
