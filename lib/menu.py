@@ -46,7 +46,31 @@ def showMenuShowGameTrees():
     print('##########   Pokaż drzewka   ###############')
     print('Wybierz kategorię')
     zapytania.qshowCategories(setConnection())
-        
+
+def showMenuPlayers():
+    os.system('cls')
+    print('########  Zawodnicy  ############')
+    menu = {1:"Znajdź zawodnika", 2:"Przegląd po kategoriach", 3:"Przegląd po klubach", 4:"Powrót"}
+    j = 1
+    for i in menu:
+        print("[",j,"]",menu[i])
+        j +=1    
+
+def showMenuFindPlayer():
+    os.system('cls')
+    menu = {1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Usuń zawodnika", 4:"Powrót"}
+    j = 1
+    for i in menu:
+        print("[",j,"]",menu[i])
+        j +=1 
+
+def showMenuEditPlayer():
+    menu = {1:"Edytuj imię", 2:"Edytuj nazwisko", 3:"Zmień kategorię wagową", 4:"Powrót"}
+    j = 1
+    for i in menu:
+        print("[",j,"]",menu[i])
+        j +=    1 
+
 def menuAdmin():
     statusmA = 0
     while statusmA != 99:
@@ -131,7 +155,59 @@ def menuShowGameTrees():
         else:
             print("nieprawidłowy wybór")
     
-            
+def menuPlayers():
+    statusmP =0
+    while statusmP !=99:
+        showMenuPlayers()
+        action = menuChoice()
+        if action == 1:
+            findPlayer()
+        elif action == 2:
+            pass
+        elif action == 3:
+            pass
+        elif action == 4:
+            break
+        else:
+            print("Wybór niepoprawny")
 
 
-        
+def findPlayer():
+    os.system('cls')
+    print("Podaj dane zawodnika któreg chcesz znaleźć:")
+    name = str(input("Imię: "))
+    secondName = str(input("Nazwisko: "))
+    zapytania.qFindPlayer(setConnection(), name, secondName)
+    menuFindPlayer()
+    
+def menuFindPlayer():
+    statusmFP =0
+    while statusmFP !=99:
+        showMenuFindPlayer()
+        action = menuChoice()
+        if action == 1:
+            editPlayer()
+        elif action == 2:
+            pass
+        elif action == 3:
+            pass
+        elif action == 4:
+            break
+        else:
+            print("Wybór niepoprawny")    
+
+def editPlayer():
+    id = str(input("Wpisz ID zawodnika którego chcesz edytować: "))
+    zapytania.qEditedPlayer(setConnection(), id)
+    showMenuEditPlayer()
+    action = menuChoice()
+    if action == 1:
+        zapytania.uChangePlayerName(setConnection(), id)
+    elif action == 2:
+        zapytania.uChangePlayerLastName(setConnection(), id)
+    elif action == 3:
+        zapytania.uChangeWeightCategory(setConnection(), id)
+    elif action == 4:
+        pass
+    else:
+        print("Wybór niepoprawny")      

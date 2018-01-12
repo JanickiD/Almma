@@ -17,6 +17,6 @@ while status == 0:
     if choice == 2:
         lib.menu.menuShowGameTrees()
     if choice == 3:
-        lib.zapytania.iCreateFights(lib.menu.setConnection())
+        lib.menu.menuPlayers()
     if choice == 4:
         sys.exit()
