@@ -133,7 +133,10 @@ def qShowGameTrees(connectionPar, category, weight_cat):
     
     
 
-def qFindPlayer(connectionPar, name, secondName):
+def qFindPlayer(connectionPar):
+    print("Podaj dane zawodnika któreg chcesz znaleźć:")
+    name = str(input("Imię: "))
+    secondName = str(input("Nazwisko: "))    
     c=connectionPar.cursor()
     if name == "":
         c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club,(SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł' from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.last_name_p = '"+str(secondName)+"' ;")
@@ -149,6 +152,7 @@ def qFindPlayer(connectionPar, name, secondName):
     print("-"*95)
     for i in result:
         print("|%3s|%15s|%25s|%5s|%30s|%12s|" % (i[0], i[1], i[2], i[3],i[4],i[5]))
+    #menu.menuFindPlayer()
 
 def qEditedPlayer(connectionPar, id):
     c=connectionPar.cursor()
@@ -191,3 +195,27 @@ def uChangeWeightCategory(connectionPar, id):
                 break
     c2.execute("UPDATE player SET id_weight="+str(choice)+" WHERE id_p="+str(id)+";")
     print("Edycja zakończona")
+
+def qShowPlayerCategories(connectionPar):
+    print()
+    id = input("Podaj ID zawodnika: ")
+    c=connectionPar.cursor()
+    c.execute("SELECT a.player_id_p, c.name_cat FROM almma.category_has_player as a join almma.category as c on a.category_id_cat=c.id_cat where a.player_id_p ="+str(id)+";")
+    result = c.fetchall()
+    print("|%12s|%20s|" % ("ID zzawodnika", "Formuły")) 
+    for i in result:
+        print("|%12s|%20s|" % (i[0], i[1])) 
+    print()
+    return id
+    
+    
+def iAddPlayerCategory(connectionPar, id):
+    c=connectionPar.cursor()
+    c2=connectionPar.cursor()
+    c.execute("select * from category;")
+    kategorie = c.fetchall()
+    print("|%12s|%20s|" % ("ID kategorii", "Nazwa kategorii"))
+    for i in kategorie:
+        print("|%12s|%20s|" % (i[0], i[1])) 
+    return 99  
+    

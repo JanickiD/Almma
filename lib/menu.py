@@ -8,6 +8,12 @@ def setConnection():
     connPar = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'), autocommit = True, charset='UTF8')
     return connPar
 
+def showMenu(menu):
+    for i in menu:
+        print("[", i, "]", menu[i])    
+    
+    
+
 
 def menuChoice():
     ch=""
@@ -21,25 +27,19 @@ def showMainMenu(userGroup):
     os.system('cls')
     if userGroup == 1:
         m = {1: "Menu Administratora", 2:"Pokaż listę walk", 3:"Zawodnicy", 4:"Koniec"}
-        for i in m:
-            print("[", i, "]", m[i])
-            
+        showMenu(m)
+        
 def showMenuAdmin():
     os.system('cls')
     print("##########   Menu Administratora   ###############")
     menu={1:"Zgłoszeni zawodnicy w podziale na kategorie", 2:"Zarządzanie zawodami", 3:"Rozrysuj drzewka", 4:"Powrót do menu głównego"}
-    j = 1
-    for i in menu:
-        print("[",j,"]",menu[i])
-        j +=1
+    showMenu(menu)
+    
 def showMenuTournamentsManagement():
     os.system('cls')
     print('##########   Zarządzanie zawodami   ###############')
     menu = {1:"Pokaż zawody", 2:"Dodaj zawody", 3:"Powrót"}
-    j = 1
-    for i in menu:
-        print("[",j,"]",menu[i])
-        j +=1
+    showMenu(menu)
 
 def showMenuShowGameTrees():
     os.system('cls')
@@ -51,25 +51,20 @@ def showMenuPlayers():
     os.system('cls')
     print('########  Zawodnicy  ############')
     menu = {1:"Znajdź zawodnika", 2:"Przegląd po kategoriach", 3:"Przegląd po klubach", 4:"Powrót"}
-    j = 1
-    for i in menu:
-        print("[",j,"]",menu[i])
-        j +=1    
+    showMenu(menu)
 
 def showMenuFindPlayer():
-    os.system('cls')
-    menu = {1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Usuń zawodnika", 4:"Powrót"}
-    j = 1
-    for i in menu:
-        print("[",j,"]",menu[i])
-        j +=1 
+    menu = {1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Usuń zawodnika",4:"Pokaż formuły w których walczy" ,5:"Powrót"}
+    showMenu(menu)
 
 def showMenuEditPlayer():
     menu = {1:"Edytuj imię", 2:"Edytuj nazwisko", 3:"Zmień kategorię wagową", 4:"Powrót"}
-    j = 1
-    for i in menu:
-        print("[",j,"]",menu[i])
-        j +=    1 
+    showMenu(menu)
+
+
+def showMenuQShowPlayerCategories():
+    menu={1:"Dodaj kategorię", 2:"Usuń kategorię", 3:"Powrót"}
+    showMenu(menu)
 
 def menuAdmin():
     statusmA = 0
@@ -161,7 +156,7 @@ def menuPlayers():
         showMenuPlayers()
         action = menuChoice()
         if action == 1:
-            findPlayer()
+            menuFindPlayer(zapytania.qFindPlayer(setConnection()))
         elif action == 2:
             pass
         elif action == 3:
@@ -172,15 +167,15 @@ def menuPlayers():
             print("Wybór niepoprawny")
 
 
-def findPlayer():
-    os.system('cls')
-    print("Podaj dane zawodnika któreg chcesz znaleźć:")
-    name = str(input("Imię: "))
-    secondName = str(input("Nazwisko: "))
-    zapytania.qFindPlayer(setConnection(), name, secondName)
-    menuFindPlayer()
+#def findPlayer():
+    #os.system('cls')
+    #print("Podaj dane zawodnika któreg chcesz znaleźć:")
+    #name = str(input("Imię: "))
+    #secondName = str(input("Nazwisko: "))
+    #zapytania.qFindPlayer(setConnection(), name, secondName)
+    #menuFindPlayer()
     
-def menuFindPlayer():
+def menuFindPlayer(nieistotnyparametr):
     statusmFP =0
     while statusmFP !=99:
         showMenuFindPlayer()
@@ -192,22 +187,41 @@ def menuFindPlayer():
         elif action == 3:
             pass
         elif action == 4:
+            #zapytania.qShowPlayerCategories(setConnection())
+            menuQShowPlayerCategories(zapytania.qShowPlayerCategories(setConnection()))
+        elif action == 5:
             break
         else:
             print("Wybór niepoprawny")    
 
 def editPlayer():
     id = str(input("Wpisz ID zawodnika którego chcesz edytować: "))
-    zapytania.qEditedPlayer(setConnection(), id)
-    showMenuEditPlayer()
-    action = menuChoice()
-    if action == 1:
-        zapytania.uChangePlayerName(setConnection(), id)
-    elif action == 2:
-        zapytania.uChangePlayerLastName(setConnection(), id)
-    elif action == 3:
-        zapytania.uChangeWeightCategory(setConnection(), id)
-    elif action == 4:
-        pass
-    else:
-        print("Wybór niepoprawny")      
+    #zapytania.qEditedPlayer(setConnection(), id)
+    status = 0
+    while status!=99:
+        zapytania.qEditedPlayer(setConnection(), id)
+        showMenuEditPlayer()
+        action = menuChoice()
+        if action == 1:
+            zapytania.uChangePlayerName(setConnection(), id)
+        elif action == 2:
+            zapytania.uChangePlayerLastName(setConnection(), id)
+        elif action == 3:
+            zapytania.uChangeWeightCategory(setConnection(), id)
+        elif action == 4:
+            break
+        else:
+            print("Wybór niepoprawny")     
+
+def menuQShowPlayerCategories(id):
+    while True:
+        showMenuQShowPlayerCategories()
+        action = menuChoice()
+        if action == 1:
+            zapytania.iAddPlayerCategory(setConnection(), id)
+        elif action == 2:
+            break
+        elif action == 3:
+            break
+        else: 
+            print("Wybór nieprawidłowy")
