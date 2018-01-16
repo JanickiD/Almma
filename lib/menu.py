@@ -25,6 +25,7 @@ def menuChoice():
 
 def showMainMenu(userGroup):
     os.system('cls')
+    print("##########   Menu główne   ###############")
     if userGroup == 1:
         m = {1: "Menu Administratora", 2:"Pokaż listę walk", 3:"Zawodnicy", 4:"Koniec"}
         showMenu(m)
@@ -50,14 +51,18 @@ def showMenuShowGameTrees():
 def showMenuPlayers():
     os.system('cls')
     print('########  Zawodnicy  ############')
-    menu = {1:"Znajdź zawodnika", 2:"Przegląd po kategoriach", 3:"Przegląd po klubach", 4:"Powrót"}
+    menu = {1:"Przegląd po zawodnikach", 2:"Przegląd po kategoriach", 3:"Przegląd po klubach", 4:"Powrót"}
     showMenu(menu)
 
 def showMenuFindPlayer():
-    menu = {1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Usuń zawodnika",4:"Pokaż formuły w których walczy" ,5:"Powrót"}
+    os.system('cls')
+    print('######## Przegląd po zawodnikach  ############')    
+    menu = {0:"Znajdź zawodnika",1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Zablokuj zweryfkowanego zawodnika",4:"Pokaż formuły w których walczy" ,5:"Powrót"}
     showMenu(menu)
 
 def showMenuEditPlayer():
+    #os.system('cls')
+    print('######## Edycja zawodnika  ############')      
     menu = {1:"Edytuj imię", 2:"Edytuj nazwisko", 3:"Zmień kategorię wagową", 4:"Powrót"}
     showMenu(menu)
 
@@ -156,7 +161,7 @@ def menuPlayers():
         showMenuPlayers()
         action = menuChoice()
         if action == 1:
-            menuFindPlayer(zapytania.qFindPlayer(setConnection()))
+            menuFindPlayer()
         elif action == 2:
             pass
         elif action == 3:
@@ -175,43 +180,48 @@ def menuPlayers():
     #zapytania.qFindPlayer(setConnection(), name, secondName)
     #menuFindPlayer()
     
-def menuFindPlayer(nieistotnyparametr):
+def menuFindPlayer():
     statusmFP =0
     while statusmFP !=99:
         showMenuFindPlayer()
         action = menuChoice()
-        if action == 1:
+        if action == 0:
+            zapytania.qFindPlayer(setConnection())
+        elif action == 1:
             editPlayer()
         elif action == 2:
-            pass
+            zapytania.iAddNewPlayer(setConnection())
         elif action == 3:
             pass
         elif action == 4:
-            #zapytania.qShowPlayerCategories(setConnection())
-            menuQShowPlayerCategories(zapytania.qShowPlayerCategories(setConnection()))
+            id = input("Podaj ID zawodnika: ")
+            menuQShowPlayerCategories(zapytania.qShowPlayerCategories(setConnection(), id))
         elif action == 5:
             break
         else:
             print("Wybór niepoprawny")    
 
 def editPlayer():
-    id = str(input("Wpisz ID zawodnika którego chcesz edytować: "))
-    #zapytania.qEditedPlayer(setConnection(), id)
-    status = 0
-    while status!=99:
-        zapytania.qEditedPlayer(setConnection(), id)
-        showMenuEditPlayer()
-        action = menuChoice()
-        if action == 1:
-            zapytania.uChangePlayerName(setConnection(), id)
-        elif action == 2:
-            zapytania.uChangePlayerLastName(setConnection(), id)
-        elif action == 3:
-            zapytania.uChangeWeightCategory(setConnection(), id)
-        elif action == 4:
-            break
+    while True:
+        id = str(input("Wpisz ID zawodnika którego chcesz edytować. Enter aby wyjść. Wybór: "))
+        if id != "":
+            zapytania.qEditedPlayer(setConnection(), id)
+            showMenuEditPlayer()
+            action = menuChoice()
+            if action == 1:
+                zapytania.uChangePlayerName(setConnection(), id)
+            elif action == 2:
+                zapytania.uChangePlayerLastName(setConnection(), id)
+            elif action == 3:
+                zapytania.uChangeWeightCategory(setConnection(), id)
+            elif action == 4:
+                break
+            elif id == "":
+                break
+            else:
+                print("Wybór niepoprawny")    
         else:
-            print("Wybór niepoprawny")     
+            break
 
 def menuQShowPlayerCategories(id):
     while True:
@@ -220,6 +230,7 @@ def menuQShowPlayerCategories(id):
         if action == 1:
             zapytania.iAddPlayerCategory(setConnection(), id)
         elif action == 2:
+            zapytania.uDelPlayerCategory(setConnection(), id)
             break
         elif action == 3:
             break

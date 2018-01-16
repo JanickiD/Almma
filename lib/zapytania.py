@@ -95,7 +95,7 @@ def iDraw(connectionPar):
         for category in range(1,9):
             for weight_cat in range(1,9):
                 c2.execute("SET FOREIGN_KEY_CHECKS = 0")
-                c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and p.id_weight = "+str(weight_cat)+" order by id_club;")
+                c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and p.id_weight = "+str(weight_cat)+" and p.verified = 1 order by id_club;")
                 players = c.fetchall()
                 j = 0
                 for i in players:
@@ -134,34 +134,40 @@ def qShowGameTrees(connectionPar, category, weight_cat):
     
 
 def qFindPlayer(connectionPar):
-    print("Podaj dane zawodnika któreg chcesz znaleźć:")
-    name = str(input("Imię: "))
-    secondName = str(input("Nazwisko: "))    
-    c=connectionPar.cursor()
-    if name == "":
-        c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club,(SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł' from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.last_name_p = '"+str(secondName)+"' ;")
-    elif secondName == "":
-        c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club, (SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł'  from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.name_p = '"+str(name)+"' ;")
-    elif name == "" and secondName == "":
-        print("Nie wpisałeś danych! ")
+    os.system('cls')
+    c=connectionPar.cursor()   
+    print("Podaj dane zawodnika któreg chcesz znaleźć. Aby pominąć dane pole wciśnij ENTER.")
+    id = str(input("ID: "))
+    if id != "":
+            c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club,(SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł' from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.id_p = '"+str(id)+"' ;")
     else:
-        c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club, (SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł'  from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.name_p = '"+str(name)+"' and p.last_name_p = '"+str(secondName)+"' ;")
-    
+        name = str(input("Imię: "))
+        secondName = str(input("Nazwisko: "))    
+        if name == "":
+            c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club,(SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł' from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.last_name_p = '"+str(secondName)+"' ;")
+        elif secondName == "":
+            c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club, (SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł'  from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.name_p = '"+str(name)+"' ;")
+        elif name == "" and secondName == "":
+            print("Nie wpisałeś danych! ")
+        else:
+            c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club, (SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł'  from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.name_p = '"+str(name)+"' and p.last_name_p = '"+str(secondName)+"' ;")
+        
     result = c.fetchall()
     print("|%3s|%15s|%25s|%5s|%30s|%12s|" %("ID", "Imię", "Nazwisko", "Waga", "Klub","Liczba Formuł"))
     print("-"*95)
     for i in result:
         print("|%3s|%15s|%25s|%5s|%30s|%12s|" % (i[0], i[1], i[2], i[3],i[4],i[5]))
-    #menu.menuFindPlayer()
-
+    input("Wciśnij klawisz ENTER jeżeli skończyłeś przeglądać")
+    
 def qEditedPlayer(connectionPar, id):
     c=connectionPar.cursor()
     c.execute("select p.id_p, p.name_p, p.last_name_p, w.value_weight, c.name_club,(SELECT count(category_id_cat) FROM almma.category_has_player where player_id_p = p.id_p) as 'Liczba formuł' from player as p join club as c on p.id_club=c.id_club join weight_cat as w on p.id_weight=w.id_weight where p.id_p = "+str(id)+" ;")
     result = c.fetchall()
-    print("Edytujesz zawodnika:")
+    print()
     for i in result:
-        print("|%3s|%15s|%25s|%5s|%30s|%12s|" % (i[0], i[1], i[2], i[3],i[4],i[5]))
-    
+        print("ID: "+str(i[0])+"\t "+str(i[1]) +" "+str(i[2])+ "\t waga: "+str(i[3])+ " klub: "+str(i[4])+"\t walczy w "+str(i[5])+" kategoriach")
+        #print("|%3s|%15s|%25s|%5s|%30s|%12s|" % (i[0], i[1], i[2], i[3],i[4],i[5]))
+    print()
     
 def uChangePlayerName(connectionPar, id):
     newName = str(input("Podaj nowe imię:"))
@@ -196,26 +202,139 @@ def uChangeWeightCategory(connectionPar, id):
     c2.execute("UPDATE player SET id_weight="+str(choice)+" WHERE id_p="+str(id)+";")
     print("Edycja zakończona")
 
-def qShowPlayerCategories(connectionPar):
+def qShowPlayerCategories(connectionPar, id):
     print()
-    id = input("Podaj ID zawodnika: ")
+    #id = input("Podaj ID zawodnika: ")
+    qEditedPlayer(connectionPar, id)
     c=connectionPar.cursor()
     c.execute("SELECT a.player_id_p, c.name_cat FROM almma.category_has_player as a join almma.category as c on a.category_id_cat=c.id_cat where a.player_id_p ="+str(id)+";")
     result = c.fetchall()
-    print("|%12s|%20s|" % ("ID zzawodnika", "Formuły")) 
+    print("|%12s|%30s|" % ("ID zzawodnika", "Formuły")) 
     for i in result:
-        print("|%12s|%20s|" % (i[0], i[1])) 
+        print("|%12s|%30s|" % (i[0], i[1])) 
     print()
     return id
     
-    
 def iAddPlayerCategory(connectionPar, id):
+    os.system('cls')
+    print("######### Dodawanie zawodnika do kategorii ##########")
     c=connectionPar.cursor()
     c2=connectionPar.cursor()
+    qShowPlayerCategories(connectionPar, id)
     c.execute("select * from category;")
     kategorie = c.fetchall()
     print("|%12s|%20s|" % ("ID kategorii", "Nazwa kategorii"))
     for i in kategorie:
         print("|%12s|%20s|" % (i[0], i[1])) 
-    return 99  
+    kat = None
+    while True:
+        kat = int(input("Wpisz ID kategorii do której checesz dodać zawodnika: "))
+        if kat<1 or kat>8:
+            print("Wpisałeś niepoprawną kategorię")
+        else:
+            break;
+    try:
+        c2.execute("INSERT INTO `almma`.`category_has_player` (`player_id_p`, `category_id_cat`) VALUES ('"+str(id)+"', '"+str(kat)+"');")
+        print("Kategoria dodana prawidłowo!") 
+    except:
+        print("Zawodnik walczy już w tej kategorii! Spróbój ponownie.")
     
+
+def uDelPlayerCategory(connectionPar, id):
+    qEditedPlayer(connectionPar, id)
+    c=connectionPar.cursor()
+    c2=connectionPar.cursor()
+    c3=connectionPar.cursor()
+    c3.execute("SELECT category_id_cat FROM almma.category_has_player where player_id_p = "+str(id)+";")
+    pc = c3.fetchall()
+    PlayerCategory = []
+    for i in pc:
+        PlayerCategory.append(str(i[0]))  
+    c.execute("select ch.category_id_cat, c.name_cat  from category_has_player as ch join category as c on ch.category_id_cat = c.id_cat where ch.player_id_p = "+str(id)+";")
+    result = c.fetchall()
+    print("Zawodnik walczy w formułach:")
+    print("|%12s|%20s|" % ("ID kategorii", "Nazwa Kategorii")) 
+    for i in result:
+        print("|%12s|%30s|" % (i[0], i[1])) 
+    print()
+    while True:
+        kat = int(input("Wpisz ID kategorii z której chcesz usunąć zawodnika"))
+        if str(kat) not in PlayerCategory:
+            print("Nieprawidłowy wybór. Zawodnik nie walczy w tej kategorii!")
+            print()
+        else:
+            break
+    try:            
+        c2.execute("DELETE FROM `almma`.`category_has_player` WHERE `player_id_p`='"+str(id)+"' and`category_id_cat`='"+str(kat)+"';")
+        print("Zawodnik usunięty z podanej kategorii!")
+    except Exception:
+        print("Usunięcie nie udane.")
+
+def qShowAllWeightsCategories():
+    c = menu.setConnection().cursor()
+    c.execute("select * from weight_cat;")
+    weights = c.fetchall()
+    print("|%12s|%10s|" % ("ID kategorii", "Waga (w kg)"))
+    print("-"*25)
+    for i in weights:
+        print("|%12s|%10s|" % (i[0], i[1]))
+        
+def qShowAllClubs():
+    c = menu.setConnection().cursor()
+    c.execute("select * from club;")
+    clubs = c.fetchall()
+    print("|%12s|%30s|" % ("ID klubu", "Nazwa klubu"))
+    print("-"*38)
+    ClubsIDList = []
+    for i in clubs:
+        print("|%12s|%10s|" % (i[0], i[1])) 
+        ClubsIDList.append(str(i[0]))
+    return ClubsIDList
+
+def iAddNewPlayer(connectionPar):
+    os.system('cls')
+    c = connectionPar.cursor()
+    c2 = connectionPar.cursor()
+    print("###### Dodawanie nowego zawodnika ######")
+    name = ""
+    lastName = ""
+    weight = ""
+    club = ""
+    while True:
+        if name == "":
+            name = str(input("Wpisz imie:"))
+        else:
+            break
+        
+    while True:
+        if lastName == "":
+            lastName = str(input("Wpisz nazwisko:"))
+        else:
+            break    
+
+    qShowAllWeightsCategories()
+    while True:
+        if weight == "":
+            weight = str(input("Wpisz ID kategorii wagowej z tabeli powyżej:"))
+        elif int(weight) < 0 and int(weight) > 8:
+            weight = str(input("Niepoprawna wartość! Wpisz ID kategorii wagowej z tabeli powyżej:"))
+        else:
+            break    
+    print()
+    listIDClubs = qShowAllClubs()
+    while True:
+        if club == "":
+            club = str(input("Wpisz ID klubu z tabeli powyżej:"))
+        elif club not in listIDClubs:
+            club = str(input("Niepoprawna wartość! Wpisz ID kategorii wagowej z tabeli powyżej:"))
+        else:
+            break    
+    print(name, lastName, weight, club)
+    c2.execute("INSERT INTO `almma`.`player` (`name_p`, `last_name_p`, `id_weight`, `id_club`) VALUES ('"+str(name)+"', '"+str(lastName)+"', '"+str(weight)+"', '"+str(club)+"');")
+    c.execute("select id_p from player where name_p = '"+str(name)+"' and last_name_p = '"+str(lastName)+"' and id_weight = '"+str(weight)+"' and id_club = '"+str(club)+"';")
+    getID = c.fetchone()
+    id = getID[0]
+    
+    print("Dopisz zawodnika do kategorii.")
+    iAddPlayerCategory(connectionPar, id)
+    print("Zawodnik dodany prawidłowo!")
