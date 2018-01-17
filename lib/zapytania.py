@@ -91,18 +91,22 @@ def iDraw(connectionPar):
     id_gt = (1,9,13,5,3,11,15,7,2,10,14,6,4,12,16,8)
     c = connectionPar.cursor()
     c2 = connectionPar.cursor()
+    c3 = connectionPar.cursor()
     try:
         for category in range(1,9):
             for weight_cat in range(1,9):
                 c2.execute("SET FOREIGN_KEY_CHECKS = 0")
-                c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and p.id_weight = "+str(weight_cat)+" and p.verified = 1 order by id_club;")
+                c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and p.id_weight = "+str(weight_cat)+" and p.verified != 0 order by id_club;")
                 players = c.fetchall()
                 j = 0
                 for i in players:
                     c2.execute("INSERT INTO `almma`.`game_tree` (`id_p`, `id_gt`) VALUES ( "+str(i[0])+", "+str(id_gt[j])+" );")
+                    c2.execute("UPDATE `almma`.`player` SET `hashed`='1' WHERE `id_p`='"+str(i[0])+"';")
                     j += 1
+        print("Rozpisywanie drzewek wykonane!")
     except:
         print("error") 
+    input("Wciśnij dowolny klawisz aby kontynuować.")
 
 def iCreateFights(connetionPar):
     c = connectionPar.cursor()

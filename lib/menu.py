@@ -33,7 +33,7 @@ def showMainMenu(userGroup):
 def showMenuAdmin():
     os.system('cls')
     print("##########   Menu Administratora   ###############")
-    menu={1:"Zgłoszeni zawodnicy w podziale na kategorie", 2:"Zarządzanie zawodami", 3:"Rozrysuj drzewka", 4:"Powrót do menu głównego"}
+    menu={1:"Liczba zawodników w kategoriach", 2:"Zarządzanie zawodami", 3:"Rozrysuj drzewka", 4:"Powrót do menu głównego"}
     showMenu(menu)
     
 def showMenuTournamentsManagement():
