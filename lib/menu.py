@@ -163,7 +163,7 @@ def menuPlayers():
         if action == 1:
             menuFindPlayer()
         elif action == 2:
-            pass
+            zapytania.qShowPlayerByCategories(setConnection())
         elif action == 3:
             pass
         elif action == 4:

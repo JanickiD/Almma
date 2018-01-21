@@ -96,13 +96,13 @@ def iDraw(connectionPar):
         for category in range(1,9):
             for weight_cat in range(1,9):
                 c2.execute("SET FOREIGN_KEY_CHECKS = 0")
-                c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and p.id_weight = "+str(weight_cat)+" and p.verified != 0 order by id_club;")
+                c.execute("select id_p from player as p join category_has_player as c on p.id_p = c.player_id_p where c.category_id_cat = "+str(category)+" and p.id_weight = "+str(weight_cat)+" and p.verified != 0 and p.hashed != 1 order by id_club;")
                 players = c.fetchall()
                 j = 0
                 for i in players:
-                    c2.execute("INSERT INTO `almma`.`game_tree` (`id_p`, `id_gt`) VALUES ( "+str(i[0])+", "+str(id_gt[j])+" );")
-                    c2.execute("UPDATE `almma`.`player` SET `hashed`='1' WHERE `id_p`='"+str(i[0])+"';")
+                    c2.execute("INSERT INTO `almma`.`game_tree` (`id_p`, `id_gt`, `id_cat`, `id_weight_cat`) VALUES ( "+str(i[0])+", "+str(id_gt[j])+", "+str(category)+", "+str(weight_cat)+" );")
                     j += 1
+                    c2.execute("UPDATE `almma`.`player` SET `hashed`='1' WHERE `id_p`='"+str(i[0])+"';")
         print("Rozpisywanie drzewek wykonane!")
     except:
         print("error") 
@@ -132,7 +132,7 @@ def qShowGameTrees(connectionPar, category, weight_cat):
     c2.execute('select value_weight from weight_cat where id_weight ='+str(weight_cat))
     cat = c.fetchone()
     weight = c2.fetchone()
-    print("===== Listę walk dla", cat[0], weight[0], "========")
+    print("===== Lista walk dla", cat[0], weight[0], "========")
     print()
     
     
@@ -287,11 +287,11 @@ def qShowAllClubs():
     c = menu.setConnection().cursor()
     c.execute("select * from club;")
     clubs = c.fetchall()
-    print("|%12s|%30s|" % ("ID klubu", "Nazwa klubu"))
+    print("|%12s|%35s|" % ("ID klubu", "Nazwa klubu"))
     print("-"*38)
     ClubsIDList = []
     for i in clubs:
-        print("|%12s|%10s|" % (i[0], i[1])) 
+        print("|%12s|%35s|" % (i[0], i[1])) 
         ClubsIDList.append(str(i[0]))
     return ClubsIDList
 
@@ -342,3 +342,20 @@ def iAddNewPlayer(connectionPar):
     print("Dopisz zawodnika do kategorii.")
     iAddPlayerCategory(connectionPar, id)
     print("Zawodnik dodany prawidłowo!")
+    
+   
+def qShowPlayerByCategories (connectionPar):
+    c = connectionPar.cursor()
+    qshowCategories(connectionPar)
+    choice = str(input("Wpisz ID kategorii dla której chcesz przejrzeć zawodników:"))
+    print("|%10s|%25s|%5s|%35s|" % ("ID kategorii", "Zawodnik", "Waga", "Klub"))
+    print(50*"-")
+    try:
+        c.execute("select id_p, concat_ws(' ', name_p, last_name_p), ws.value_weight, c.name_club from player join weight_cat as ws on player.id_weight = ws.id_weight join club as c on player.id_club = c.id_club join category_has_player on player.id_p = category_has_player.player_id_p where category_has_player.category_id_cat = "+str(choice)+" order by ws.value_weight asc;")
+        categories = c.fetchall()
+        for i in categories:
+            print("|%10s|%25s|%5s|%35s|" % (i[0], i[1], i[2], i[3]))
+    except Exception:
+        print("Wybór niepoprawny!")
+    input("Wciśnij enter aby kontynuować.")
+    
