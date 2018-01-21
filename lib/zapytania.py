@@ -3,6 +3,7 @@ import pymysql
 import condb
 import os
 import menu
+import time
 
 def qNumberInCat(connectionPar):
     os.system("cls") 
@@ -10,10 +11,8 @@ def qNumberInCat(connectionPar):
     c=conn.cursor()    
     c.execute("select count(*) as 'liczba zawodników', category.name_cat as 'Kategoria' from category_has_player join category on category_has_player.category_id_cat = category.id_cat group by category_id_cat;")
     print("############### ILOŚĆ ZAWODNIKÓW W KATEGORIACH #######################")
-    j = 1
     for i in c.fetchall():
-        print("["+ str(j) +"] Kategoria:", i[1], i[0],"zawodników.")
-        j += 1
+        print(" - Kategoria", i[1],":", i[0],"zawodników.")
     print(" ")
     print("[ 1 ] Pokaż rozbicie na wagi")
     print("[ 2 ] Powrót")
@@ -38,7 +37,7 @@ def qShowAllTournaments(connectionPar):
     print("################ ZAWODY #################")
     conn = connectionPar
     c=conn.cursor()
-    c.execute('select t.name_tourn, t.city_tourn, t.date_tourn, r.rank, t.tourn_is_active from tournament as t join rank as r on t.rank_tourn = r.id_rank order by t.date_tourn desc')
+    c.execute('select t.name_tourn, t.city_tourn, t.date_tourn, r.rank, t.tourn_is_active from almma.tournament as t join rank as r on t.rank_tourn = r.id_rank order by t.date_tourn desc')
     j = 1
     for i in c.fetchall():
         print("[",j,"] Nazwa: ", i[0], "   Miasto: ", i[1], "   Data: ", i[2], "   Ranga: ", i[3], "   Aktywny: ", i[4])
@@ -285,10 +284,10 @@ def qShowAllWeightsCategories():
         
 def qShowAllClubs():
     c = menu.setConnection().cursor()
-    c.execute("select * from club;")
+    c.execute("select * from club order by 2 ASC")
     clubs = c.fetchall()
     print("|%12s|%35s|" % ("ID klubu", "Nazwa klubu"))
-    print("-"*38)
+    print("-"*50)
     ClubsIDList = []
     for i in clubs:
         print("|%12s|%35s|" % (i[0], i[1])) 
@@ -358,4 +357,42 @@ def qShowPlayerByCategories (connectionPar):
     except Exception:
         print("Wybór niepoprawny!")
     input("Wciśnij enter aby kontynuować.")
+    
+def qShowPlayersByClubs(connectionPar):
+    c=connectionPar.cursor();
+    os.system('cls')
+    print("################ Przegląd zawodników po klubach ################")
+    qShowAllClubs();
+    club = input("Wpisz ID klubu z tabeli powyżej dla którego chcesz znaleźć zawodników:")
+    c.execute('select p.id_p, concat_ws(" ", p.name_p, p.last_name_p) as zawodnik , wc.value_weight, case verified when 1 then "TAK" else "NIE" end as verified, case hashed when 1 then "TAK" else "NIE" end as hashed, c.name_club  from player as p join weight_cat as wc on p.id_weight = wc.id_weight join club as c on p.id_club = c.id_club where p.id_club ='+str(club)+';')
+    players = c.fetchall()
+    print("|%14s|%30s|%10s|%10s|%10s|%35s" % ("ID zawodnika", "Zawodnik", "Waga", "Zweryfikowany", "Rozstawiony", "Kllub"))
+    for i in players:
+        print("|%14s|%30s|%10s|%10s|%10s|%35s" % (i[0], i[1], i[2] , i[3], i[4], i[5]))
+    input("Wciśnij enter aby powrócić.")
+
+def uDisableVerifiedPlayer(connectionPar):
+    c=connectionPar.cursor();
+    os.system('cls')
+    print("################ Cofnięcie weryfikacji zawodnika ################")
+    qFindPlayer(connectionPar)
+    while True:
+        try:
+            player = int(input("Wpisz ID zawodnika którego weryfikację chcesz cofnąć: "))
+            break
+        except ValueError:
+            print("Nieprawidłowa wartość! Jeszcze raz.")  
+            
+    qEditedPlayer(connectionPar, player)
+    choice = str.upper(input("Czy chcesz cofnąć weryfikację dla powyższego zawodnika? TAK/NIE:  "))
+    if choice == "TAK":
+        c.execute("UPDATE `almma`.`player` SET `verified`='0' WHERE `id_p`='"+str(player)+"';")
+        time.sleep(2)
+    elif choice == "NIE":
+        print("Cofnięcie weryfikacji anulowane!")
+        time.sleep(2)
+    elif choice != "TAK" and choice != "NIE":
+        print("Wybór niepoprawny. Cofniecie anulowane!")
+        time.sleep(2)
+
     

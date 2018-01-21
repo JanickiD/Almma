@@ -57,7 +57,7 @@ def showMenuPlayers():
 def showMenuFindPlayer():
     os.system('cls')
     print('######## Przegląd po zawodnikach  ############')    
-    menu = {0:"Znajdź zawodnika",1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Zablokuj zweryfkowanego zawodnika",4:"Pokaż formuły w których walczy" ,5:"Powrót"}
+    menu = {0:"Znajdź zawodnika",1:"Edytuj zawodnika", 2:"Dodaj zawodnika", 3:"Cofnięcie weryfikacji zawodnika",4:"Pokaż formuły w których walczy" ,5:"Powrót"}
     showMenu(menu)
 
 def showMenuEditPlayer():
@@ -165,7 +165,7 @@ def menuPlayers():
         elif action == 2:
             zapytania.qShowPlayerByCategories(setConnection())
         elif action == 3:
-            pass
+            zapytania.qShowPlayersByClubs(setConnection())
         elif action == 4:
             break
         else:
@@ -192,7 +192,7 @@ def menuFindPlayer():
         elif action == 2:
             zapytania.iAddNewPlayer(setConnection())
         elif action == 3:
-            pass
+            zapytania.uDisableVerifiedPlayer(setConnection())
         elif action == 4:
             id = input("Podaj ID zawodnika: ")
             menuQShowPlayerCategories(zapytania.qShowPlayerCategories(setConnection(), id))
