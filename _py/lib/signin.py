@@ -12,7 +12,7 @@ class signin:
     __userGroup = None
     
     def __init__(self):
-        self.conn = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'), autocommit=True, charset='UTF8')
+        self.conn = pymysql.connect(condb.getInfo("host"), condb.getInfo('user'), condb.getInfo('password'), condb.getInfo('database'))
         self.login = self.getLogin()
         self.password = self.getPass()
         
