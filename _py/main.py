@@ -1,6 +1,7 @@
 #*-* coding: UTF8 *-*
 import sys
-sys.path.append('C:\\Users\\user\\Desktop\\almma\\lib')
+#sys.path.append('C:\\Users\\user\\Desktop\\almma\\lib')
+sys.path.append('C:\\Users\\user\\Dysk Google\\Almma\\_py\\lib')
 import pymysql
 import lib.signin
 import lib.menu
