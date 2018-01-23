@@ -8,8 +8,7 @@ import fightList
 
 def qNumberInCat(connectionPar):
     os.system("cls") 
-    conn = connectionPar
-    c=conn.cursor()    
+    c=connectionPar.cursor()    
     c.execute("select count(*) as 'liczba zawodników', category.name_cat as 'Kategoria' from category_has_player join category on category_has_player.category_id_cat = category.id_cat group by category_id_cat;")
     print("############### ILOŚĆ ZAWODNIKÓW W KATEGORIACH #######################")
     for i in c.fetchall():
@@ -17,12 +16,12 @@ def qNumberInCat(connectionPar):
     print(" ")
     print("[ 1 ] Pokaż rozbicie na wagi")
     print("[ 2 ] Powrót")
+    connectionPar.close()
     
 def qPlayersInWeightCat(connectionPar):
     os.system("cls")
     print("############### ZAWODNICY W KATEGORIACH W ROZBICIU NA WAGI #######################")
-    conn = connectionPar
-    c=conn.cursor()
+    c=connectionPar.cursor()
     categories ={1:"Junior", 2:"PK", 3:"OFS", 4:"FC", 5:"Kadet", 6:"Młodzieżowiec", 7:"NoGi Białe", 8:"NoGi Kolor"}
     for i in range(1,8):
         c.execute("select count(*) as 'Liczba zawodników', weight_cat.value_weight as waga from category_has_player as c join player as p on c.player_id_p = p.id_p join weight_cat on p.id_weight = weight_cat.id_weight where c.category_id_cat =" + str(i) + " group by weight_cat.value_weight;")
@@ -31,18 +30,19 @@ def qPlayersInWeightCat(connectionPar):
         for j in c.fetchall():
             print(j[1], "\t" , j[0])
     print ('===========================================')
+    connectionPar.close()
     print ("Aby powrócić wciśnij wciśnij dowolną cyfrę")
 
 def qShowAllTournaments(connectionPar):
     os.system('cls')
     print("################ ZAWODY #################")
-    conn = connectionPar
-    c=conn.cursor()
+    c=connectionPar.cursor()
     c.execute('select t.name_tourn, t.city_tourn, t.date_tourn, r.rank, t.tourn_is_active from almma.tournament as t join rank as r on t.rank_tourn = r.id_rank order by t.date_tourn desc')
     j = 1
     for i in c.fetchall():
         print("[",j,"] Nazwa: ", i[0], "   Miasto: ", i[1], "   Data: ", i[2], "   Ranga: ", i[3], "   Aktywny: ", i[4])
         j +=1
+    connectionPar.close()
     print("")
     print("[ 1 ] Zamknij zawody ")
     print("[ 2 ] Powrót")
@@ -53,13 +53,15 @@ def qshowCategories(connectionPar):
     res = c.fetchall()
     for i in res:
         print("[",i[0],"] ",i[1])
+    connectionPar.close()
 
 def qshowWeights(connectionPar):
     c=connectionPar.cursor()
     c.execute("select * from weight_cat")
     res = c.fetchall()
     for i in res:
-        print("[",i[0],"] ",i[1])    
+        print("[",i[0],"] ",i[1])   
+    connectionPar.close()
 
 def aCloseTournament(connectionPar):
     choicemCT = str(input("Wpisz dokładną nazwę zawodów które chesz zamknąć"))
@@ -70,6 +72,7 @@ def aCloseTournament(connectionPar):
         print("Zamknięto zawody! Nie możesz już ich edytować.")
     except:
         connectionPar.rollback()
+    connectionPar.close()
     input("Naciśnij przycisk aby powrócić")
     
 def iCreateTournament(connectionPar):
@@ -84,6 +87,7 @@ def iCreateTournament(connectionPar):
     except:
         connectionPar.rollback()
         print("Dodawanie nieudane. Sprawdź wpisywane dane.")
+    connectionPar.close()
     input("Wciśnij dowolny przycisk aby powrócić do menu zarządzania zawodami")
 
 
@@ -107,6 +111,7 @@ def iDraw(connectionPar):
         print("Rozpisywanie drzewek wykonane!")
     except:
         print("error") 
+    connectionPar.close()
     input("Wciśnij dowolny klawisz aby kontynuować.")
 
 def iCreateFights(connetionPar):
@@ -123,7 +128,8 @@ def iCreateFights(connetionPar):
                     c2.execute("INSERT INTO `almma`.`game_tree` (`id_p`, `id_gt`) VALUES ( "+str(i[0])+", "+str(id_gt[j])+" );")
                     j += 1
     except:
-        print("error") 
+        print("error")
+    connectionPar.close()
     
 
 def qShowGameTrees(connectionPar, category, weight_cat):
@@ -135,6 +141,7 @@ def qShowGameTrees(connectionPar, category, weight_cat):
     weight = c2.fetchone()
     print("===== Lista walk dla", cat[0], weight[0], "========")
     fightList.showGameTree(connectionPar, cat[1], weight[1])
+    connectionPar.close()
     print()
     
     
@@ -163,6 +170,7 @@ def qFindPlayer(connectionPar):
     print("-"*95)
     for i in result:
         print("|%3s|%15s|%25s|%5s|%30s|%12s|" % (i[0], i[1], i[2], i[3],i[4],i[5]))
+    connectionPar.close()
     input("Wciśnij klawisz ENTER jeżeli skończyłeś przeglądać")
     
 def qEditedPlayer(connectionPar, id):
@@ -173,6 +181,7 @@ def qEditedPlayer(connectionPar, id):
     for i in result:
         print("ID: "+str(i[0])+"\t "+str(i[1]) +" "+str(i[2])+ "\t waga: "+str(i[3])+ " klub: "+str(i[4])+"\t walczy w "+str(i[5])+" kategoriach")
         #print("|%3s|%15s|%25s|%5s|%30s|%12s|" % (i[0], i[1], i[2], i[3],i[4],i[5]))
+    connectionPar.close()
     print()
     
 def uChangePlayerName(connectionPar, id):
@@ -180,12 +189,14 @@ def uChangePlayerName(connectionPar, id):
     c=connectionPar.cursor()
     c.execute("UPDATE player SET name_p ='"+newName+"' WHERE `id_p`='"+str(id)+"' ")
     print("Imię zaktualizowane")
+    connectionPar.close()
     
 def uChangePlayerLastName(connectionPar, id):
     newLastName = str(input("Podaj nowe nazwisko:"))
     c=connectionPar.cursor()
     c.execute("UPDATE player SET last_name_p ='"+newLastName+"' WHERE `id_p`='"+str(id)+"' ")
     print("Nazwisko zaktualizowane")
+    connectionPar.close()
     
 def uChangeWeightCategory(connectionPar, id):
     c=connectionPar.cursor()
@@ -206,6 +217,7 @@ def uChangeWeightCategory(connectionPar, id):
             else:
                 break
     c2.execute("UPDATE player SET id_weight="+str(choice)+" WHERE id_p="+str(id)+";")
+    connectionPar.close()
     print("Edycja zakończona")
 
 def qShowPlayerCategories(connectionPar, id):
@@ -219,6 +231,7 @@ def qShowPlayerCategories(connectionPar, id):
     for i in result:
         print("|%12s|%30s|" % (i[0], i[1])) 
     print()
+    connectionPar.close()
     return id
     
 def iAddPlayerCategory(connectionPar, id):
@@ -257,7 +270,7 @@ def iAddPlayerCategory(connectionPar, id):
         print("Kategoria dodana prawidłowo!") 
     except:
         print("Zawodnik walczy już w tej kategorii! Spróbój ponownie.")
-    
+    connectionPar.close()
 
 def uDelPlayerCategory(connectionPar, id):
     qEditedPlayer(connectionPar, id)
@@ -289,7 +302,9 @@ def uDelPlayerCategory(connectionPar, id):
         print("Zawodnik usunięty z podanej kategorii!")
     except Exception:
         print("Usunięcie nie udane.")
-
+    connectionPar.close()
+    
+    
 def qShowAllWeightsCategories():
     c = menu.setConnection().cursor()
     c.execute("select * from weight_cat;")
@@ -298,7 +313,9 @@ def qShowAllWeightsCategories():
     print("-"*25)
     for i in weights:
         print("|%12s|%10s|" % (i[0], i[1]))
-        
+    connectionPar.close()
+    
+    
 def qShowAllClubs():
     c = menu.setConnection().cursor()
     c.execute("select * from club order by 2 ASC")
@@ -309,6 +326,7 @@ def qShowAllClubs():
     for i in clubs:
         print("|%12s|%35s|" % (i[0], i[1])) 
         ClubsIDList.append(str(i[0]))
+    connectionPar.close()
     return ClubsIDList
 
 def iAddNewPlayer(connectionPar):
@@ -358,7 +376,7 @@ def iAddNewPlayer(connectionPar):
     print("Dopisz zawodnika do kategorii.")
     iAddPlayerCategory(connectionPar, id)
     print("Zawodnik dodany prawidłowo!")
-    
+    connectionPar.close()
    
 def qShowPlayerByCategories (connectionPar):
     c = connectionPar.cursor()
@@ -373,6 +391,7 @@ def qShowPlayerByCategories (connectionPar):
             print("|%10s|%25s|%5s|%35s|" % (i[0], i[1], i[2], i[3]))
     except Exception:
         print("Wybór niepoprawny!")
+    connectionPar.close()
     input("Wciśnij enter aby kontynuować.")
     
 def qShowPlayersByClubs(connectionPar):
@@ -386,6 +405,7 @@ def qShowPlayersByClubs(connectionPar):
     print("|%14s|%30s|%10s|%10s|%10s|%35s" % ("ID zawodnika", "Zawodnik", "Waga", "Zweryfikowany", "Rozstawiony", "Kllub"))
     for i in players:
         print("|%14s|%30s|%10s|%10s|%10s|%35s" % (i[0], i[1], i[2] , i[3], i[4], i[5]))
+    connectionPar.close()
     input("Wciśnij enter aby powrócić.")
 
 def uDisableVerifiedPlayer(connectionPar):
@@ -412,5 +432,6 @@ def uDisableVerifiedPlayer(connectionPar):
     elif choice != "TAK" and choice != "NIE":
         print("Wybór niepoprawny. Cofniecie anulowane!")
         time.sleep(3)
-
+    connectionPar.close()
+    
     

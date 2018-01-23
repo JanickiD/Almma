@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import sys
 import os
 import pymysql
 import condb
@@ -29,8 +30,11 @@ def showMainMenu(userGroup):
     print("##########   Menu główne   ###############")
     if userGroup == 1:
         m = {1: "Menu Administratora", 2:"Pokaż listę walk", 3:"Zawodnicy", 4:"Koniec"}
-        showMenu(m)
-        
+    elif userGroup == 2:
+        m = {1:"Pokaż listę walk", 2:"Rozegraj walkę", 3:"Koniec" }
+    showMenu(m)
+    
+    
 def showMenuAdmin():
     os.system('cls')
     print("##########   Menu Administratora   ###############")
@@ -238,3 +242,24 @@ def menuQShowPlayerCategories(id):
             break
         else: 
             print("Wybór nieprawidłowy")
+            
+
+def menuMain(userGroup):
+    if userGroup == 1:
+        choice = menuChoice()
+        if choice == 1:
+            menuAdmin()
+        if choice == 2:
+            menuShowGameTrees()
+        if choice == 3:
+            menuPlayers()
+        if choice == 4:
+            sys.exit()   
+    elif userGroup == 2:
+        choice = menuChoice()
+        if choice == 1:
+            menuShowGameTrees()
+        if choice == 2:
+            pass
+        if choice == 3:
+            sys.exit()  

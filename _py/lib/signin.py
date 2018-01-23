@@ -22,17 +22,15 @@ class signin:
         login_status = 0
         while login_status == 0:
             login = input("Login:")
-            c.execute("select login from user")
-            loginy = c.fetchall()
-            
-            for i in range(len(loginy)):
-                a = loginy[i]
-                if login in a:
+            c.execute("select login from user order by login desc")
+            loginy = c.fetchall()    
+            for i in loginy:
+                a = i[0]
+                if login == a:
                     login_status +=1
                     return login
                 elif login not in a:
                     print("niepoprawny login")
-                    break
             
         
     def getPass(self):
@@ -65,3 +63,13 @@ class signin:
     
     def getConn(self):
         return self.conn
+    
+    #def signIn(self):
+        #login = input("Podaj login: ")
+        #pswd = input("Podaj hasło: ")
+        #c = self.conn.cursor()
+        #try:
+            #c.execute("select login, pass from user")
+            #for i in c.fetchall():
+                #if login in i[0]:
+                    
