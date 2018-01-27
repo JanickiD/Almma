@@ -4,6 +4,7 @@ import os
 import pymysql
 import condb
 import zapytania
+import fight
 
 
 def setConnection():
@@ -260,6 +261,6 @@ def menuMain(userGroup):
         if choice == 1:
             menuShowGameTrees()
         if choice == 2:
-            pass
+            fight.Fight.fightList()
         if choice == 3:
             sys.exit()  
