@@ -9,7 +9,7 @@ import lib.zapytania
 import lib.fight
 
 almma = lib.signin.signin()
-f1 = lib.fight.Fight()
+#f1 = lib.fight.Fight()
 
 
 while True:

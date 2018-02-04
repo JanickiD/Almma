@@ -261,6 +261,6 @@ def menuMain(userGroup):
         if choice == 1:
             menuShowGameTrees()
         if choice == 2:
-            fight.Fight.fightList()
+            fight.fightList()
         if choice == 3:
             sys.exit()  
